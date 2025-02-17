@@ -8,5 +8,5 @@ public class ProjectManagerOrientationEntity
     [Key]
     public int Id { get; set; }
 
-    public string TypeOfOrientation { get; set; } = null!; 
+    public string? TypeOfOrientation { get; set; } 
 }

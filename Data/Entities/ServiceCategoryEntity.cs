@@ -8,9 +8,9 @@ public class ServiceCategoryEntity
     [Key]
     public int Id { get; set; }
 
-    public string CategoryName { get; set; } = null!;
+    public string? CategoryName { get; set; } 
 
-    //Är en lista
+  
 
 
 }
