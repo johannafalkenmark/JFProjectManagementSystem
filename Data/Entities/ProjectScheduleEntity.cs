@@ -8,9 +8,9 @@ public class ProjectScheduleEntity
     [Key]
     public int Id { get; set; }
 
-    public string StartDate { get; set; } = null!;
+    public DateOnly StartDate { get; set; }
 
-    public string EndDate { get; set; } = null!;
+    public DateOnly EndDate { get; set; } 
 
     //koppling till project:
     public int ProjectId { get; set; }

@@ -13,5 +13,5 @@ public class CostEntity
     //Kopplas till ServiceTypeId:
 
     public int ServiceTypeId { get; set; }
-    public ServiceTypeEntity ServiceType { get; set; } = null!;
+    public ServiceTypeEntity? ServiceType { get; set; } 
 }

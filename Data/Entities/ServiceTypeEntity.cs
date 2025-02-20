@@ -8,11 +8,11 @@ public class ServiceTypeEntity
     [Key]
     public int Id { get; set; }
 
-    public string TypeName { get; set; } = null!;
+    public string? TypeName { get; set; } 
 
     //kopplas till servicecategoryId:
 
     public int ServiceCategoryId { get; set; }
-    public ServiceCategoryEntity ServiceCategory { get; set; } = null!;
+    public ServiceCategoryEntity? ServiceCategory { get; set; } 
 
 }

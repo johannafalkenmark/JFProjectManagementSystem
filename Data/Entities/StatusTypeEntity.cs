@@ -10,7 +10,6 @@ public class StatusTypeEntity
 
     public int Id { get; set; }
 
-    public string TypeName { get; set; } = null!;
+    public string? TypeName { get; set; }
 
-    //Är en lista
 }
