@@ -14,6 +14,6 @@ public class CustomerReferenceEntity
 
  
 
-
+    //Navigation property
     public ICollection<CustomerEntity> Customers = [];
 }

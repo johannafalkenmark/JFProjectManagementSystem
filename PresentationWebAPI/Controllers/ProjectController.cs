@@ -49,7 +49,7 @@ public class ProjectsController(IProjectService projectService) : ControllerBase
             return BadRequest();
 
         var result = await _projectService.UpdateProjectAsync(id, form);
-        return result ? NoContent() : NotFound();
+        return result ? Ok() : NotFound();
     }
 
 
@@ -57,7 +57,7 @@ public class ProjectsController(IProjectService projectService) : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var result = await _projectService.DeleteProjectAsync(id);
-        return result ? NoContent() : NotFound();
+        return result ? Ok() : NotFound();
     }
 
 

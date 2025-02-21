@@ -17,6 +17,7 @@ public abstract class BaseRepository<TEntity>(DataContext context) : IBaseReposi
     public virtual async Task<bool> CreateAsync(TEntity entity)
     {
         if (entity == null)
+            //tog bort ! efter false
             return false!;
         try
         {
@@ -30,6 +31,7 @@ public abstract class BaseRepository<TEntity>(DataContext context) : IBaseReposi
         catch (Exception ex)
         {
             Debug.WriteLine($"Error creating {nameof(TEntity)} :: {ex.Message}");
+            //tog bort ! efter false
             return false!;
         }
     }

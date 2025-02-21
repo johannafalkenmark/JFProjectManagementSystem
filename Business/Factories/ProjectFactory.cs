@@ -7,7 +7,7 @@ namespace Business.Factories;
 public class ProjectFactory
 
 {
-    public static ProjectEntity? Create(ProjectRegistrationForm form) => form == null ? default : new()
+    public static ProjectEntity? Create(ProjectRegistrationForm form) => form == null ? null : new ProjectEntity
     {
         ProjectName = form.ProjectName,
         
@@ -29,7 +29,7 @@ public class ProjectFactory
     };
 
   
-    public static Project? Create(ProjectEntity entity)
+    public static Project? Create(ProjectEntity entity) 
     { 
         if (entity == null)
             return null;
@@ -40,6 +40,8 @@ public class ProjectFactory
             ProjectName = entity.ProjectName,
             
         };
+
+
 
         if (entity.Customer != null)
         {

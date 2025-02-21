@@ -29,18 +29,26 @@ public class ProjectService(IProjectRepository projectRepository, ICustomerRepos
 
     //nedan kikar om den redan finns
     {
-        if (!await _customerRepository.AlreadyExistsAsync(customer => customer.Id == form.CustomerId))
+        try
+        {
+            
+            if (!await _customerRepository.AlreadyExistsAsync(customer => customer.Id == form.CustomerId))
+                return false;
+
+
+            var projectEntity = ProjectFactory.Create(form);
+            if (projectEntity == null)
+                return false;
+
+            //Sätter bool så det blir mer lättläst att det är en bool vi får ut
+            bool result = await _projectRepository.CreateAsync(projectEntity);
+            return result;
+        }
+        catch (Exception ex) 
+        {
+        Debug.WriteLine(ex.Message);
             return false;
-
-      
-        var projectEntity = ProjectFactory.Create(form);
-        if (projectEntity == null)
-            return false;
-
-        //Sätter bool så det blir mer lättläst att det är en bool vi får ut
-        bool result = await _projectRepository.CreateAsync(projectEntity);
-        return result;
-
+        }
     }
 
     //READ
