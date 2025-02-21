@@ -24,7 +24,13 @@ public class ProjectEntity
     public StatusTypeEntity StatusType { get; set; } = null!;
 
 
-    public int UserId { get; set; } //Created by user
+    public int UserId { get; set; } 
     public UserEntity User { get; set; } = null!;
+
+    public int ProjectNoteId { get; set; }
+    public ProjectNoteEntity ProjectNote { get; set; } = null!;
+
+    public int ProjectScheduleId {  get; set; }
+    public ProjectScheduleEntity ProjectSchedule { get; set; } = null!;
 
 }

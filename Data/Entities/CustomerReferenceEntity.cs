@@ -10,9 +10,10 @@ public class CustomerReferenceEntity
     [Key]
     public int Id { get; set; }
 
-    public string? Reference { get; set; } 
+    public string? Reference { get; set; }
 
-    //Kopplas till CustomerId:
-    public int CustomerId { get; set; }
-    public CustomerEntity? Customer { get; set; } 
+ 
+
+
+    public ICollection<CustomerEntity> Customers = [];
 }

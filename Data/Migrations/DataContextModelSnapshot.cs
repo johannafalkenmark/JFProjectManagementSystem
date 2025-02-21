@@ -52,6 +52,7 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -74,6 +75,9 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CustomerReferenceId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CustomerTypeId")
                         .HasColumnType("int");
 
@@ -83,6 +87,8 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerAddressId");
+
+                    b.HasIndex("CustomerReferenceId");
 
                     b.HasIndex("CustomerTypeId");
 
@@ -99,15 +105,10 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Reference")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("CustomerReference");
                 });
@@ -121,6 +122,7 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("TypeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -146,6 +148,12 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProjectNoteId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProjectScheduleId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ServiceTypeId")
                         .HasColumnType("int");
 
@@ -160,6 +168,10 @@ namespace Data.Migrations
                     b.HasIndex("CustomerId");
 
                     b.HasIndex("ProjectManagerId");
+
+                    b.HasIndex("ProjectNoteId");
+
+                    b.HasIndex("ProjectScheduleId");
 
                     b.HasIndex("ServiceTypeId");
 
@@ -179,9 +191,11 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TypeOfOrientationId")
@@ -203,6 +217,7 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("TypeOfOrientation")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -221,12 +236,7 @@ namespace Data.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectNote");
                 });
@@ -242,15 +252,10 @@ namespace Data.Migrations
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
 
                     b.ToTable("ProjectSchedule");
                 });
@@ -264,6 +269,7 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CategoryName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -283,6 +289,7 @@ namespace Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("TypeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -301,6 +308,7 @@ namespace Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("TypeName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -336,9 +344,11 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -365,6 +375,12 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Data.Entities.CustomerReferenceEntity", "CustomerReference")
+                        .WithMany()
+                        .HasForeignKey("CustomerReferenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Data.Entities.CustomerTypeEntity", "CustomerType")
                         .WithMany()
                         .HasForeignKey("CustomerTypeId")
@@ -379,20 +395,11 @@ namespace Data.Migrations
 
                     b.Navigation("CustomerAddress");
 
+                    b.Navigation("CustomerReference");
+
                     b.Navigation("CustomerType");
 
                     b.Navigation("TypeOfIndustry");
-                });
-
-            modelBuilder.Entity("Data.Entities.CustomerReferenceEntity", b =>
-                {
-                    b.HasOne("Data.Entities.CustomerEntity", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Data.Entities.ProjectEntity", b =>
@@ -406,6 +413,18 @@ namespace Data.Migrations
                     b.HasOne("Data.Entities.ProjectManagerEntity", "ProjectManager")
                         .WithMany()
                         .HasForeignKey("ProjectManagerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Entities.ProjectNoteEntity", "ProjectNote")
+                        .WithMany()
+                        .HasForeignKey("ProjectNoteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Entities.ProjectScheduleEntity", "ProjectSchedule")
+                        .WithMany()
+                        .HasForeignKey("ProjectScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -431,6 +450,10 @@ namespace Data.Migrations
 
                     b.Navigation("ProjectManager");
 
+                    b.Navigation("ProjectNote");
+
+                    b.Navigation("ProjectSchedule");
+
                     b.Navigation("ServiceType");
 
                     b.Navigation("StatusType");
@@ -447,28 +470,6 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("TypeOfOrientation");
-                });
-
-            modelBuilder.Entity("Data.Entities.ProjectNoteEntity", b =>
-                {
-                    b.HasOne("Data.Entities.ProjectEntity", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
-                });
-
-            modelBuilder.Entity("Data.Entities.ProjectScheduleEntity", b =>
-                {
-                    b.HasOne("Data.Entities.ProjectEntity", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Data.Entities.ServiceTypeEntity", b =>

@@ -11,8 +11,7 @@ public class ProjectNoteEntity
 
     public string? Notes { get; set; } 
 
-    //koppling till project:
-    public int ProjectId { get; set; }
-    public ProjectEntity? Project { get; set; } 
+
+    public ICollection<ProjectEntity> Projects = [];
 
 }

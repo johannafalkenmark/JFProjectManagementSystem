@@ -6,7 +6,7 @@ namespace Data.Contexts;
 
 public class DataContext : DbContext
 {
-    //Här ska vi registrera våra entitetr som blir tabeller i databasen
+    //Här registreras våra entitetr som blir tabeller i databasen
   
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -34,10 +34,5 @@ public class DataContext : DbContext
         public virtual DbSet<TypeOfIndustryEntity> TypeOfIndustry { get; set; }
         public virtual DbSet<UserEntity> User { get; set; }
 
-
-
-
-
-    
 
 }

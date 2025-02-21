@@ -1,9 +1,10 @@
 ﻿using Data.Contexts;
 using Data.Entities;
+using Data.Interfaces;
 
 
 namespace Data.Repositories;
-public class ProjectScheduleRepository(DataContext context) : BaseRepository<ProjectScheduleEntity>(context)
+public class ProjectScheduleRepository(DataContext context) : BaseRepository<ProjectScheduleEntity>(context), IProjectScheduleRepository
 
 {
     private readonly DataContext _context = context;

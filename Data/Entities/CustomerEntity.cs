@@ -20,9 +20,12 @@ public class CustomerEntity
 
 
     public int CustomerAddressId { get; set; }
-    public CustomerAddressEntity? CustomerAddress { get; set; } 
+    public CustomerAddressEntity? CustomerAddress { get; set; }
+
+    public int CustomerReferenceId { get; set; }
+    public CustomerReferenceEntity? CustomerReference { get; set; }
 
 
-    ////om jag går via kund kan jag hämta alla projekt:
+    ////om jag går via kund kan jag hämta alla projekt som tillhör den:
     public  ICollection<ProjectEntity> Projects = [];
 }
