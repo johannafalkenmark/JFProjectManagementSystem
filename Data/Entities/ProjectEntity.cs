@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Data.Entities;
 
@@ -11,7 +12,7 @@ public class ProjectEntity
 
     public int CustomerId { get; set; }
     public CustomerEntity Customer { get; set; } = null!;
-
+  
     public int ServiceTypeId { get; set; }
     public ServiceTypeEntity ServiceType { get; set; } = null!;
 
