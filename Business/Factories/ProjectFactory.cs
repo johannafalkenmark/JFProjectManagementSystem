@@ -7,7 +7,7 @@ namespace Business.Factories;
 public class ProjectFactory
 
 {
-    public static ProjectEntity? Create(ProjectRegistrationForm form) => form == null ? null : new()
+    public static ProjectEntity? Create(ProjectRegistrationForm form) => form == null ? null : new ProjectEntity
     {
         ProjectName = form.ProjectName,
         
@@ -23,13 +23,14 @@ public class ProjectFactory
 
         ProjectNoteId = form.ProjectNoteId,
 
-        ProjectScheduleId = form.ProjectScheduleId,
+        ProjectScheduleId = form.ProjectScheduleId
 
 
     };
 
-    public static Project? Create(ProjectEntity entity)
-    {
+  
+    public static Project? Create(ProjectEntity entity) 
+    { 
         if (entity == null)
             return null;
 
@@ -40,13 +41,15 @@ public class ProjectFactory
             
         };
 
+
+
         if (entity.Customer != null)
         {
             project.Customer = new Customer
             {
                 Id = entity.Customer.Id,
                 CustomerName = entity.Customer.CustomerName,
-               
+
             };
         }
         if (entity.ProjectManager != null)
@@ -95,7 +98,7 @@ public class ProjectFactory
             {
                 Id = entity.ProjectNote.Id,
                 Notes = entity.ProjectNote.Notes,
-                
+
             };
         }
 
@@ -113,7 +116,23 @@ public class ProjectFactory
 
         return project;
     }
+ 
 
+    public static ProjectEntity? Update(ProjectEntity entity, ProjectRegistrationForm form)
+    {
+        if (entity == null ||  form == null)
+            return null;
 
+        entity.ProjectName = form.ProjectName;
+        entity.CustomerId = form.CustomerId;
+        entity.ServiceTypeId = form.ServiceTypeId;
+        entity.ProjectManagerId = form.ProjectManagerId;
+        entity.StatusTypeId = form.StatusTypeId;
+        entity.UserId = form.UserId;
+        entity.ProjectNoteId = form.ProjectNoteId;
+        entity.ProjectScheduleId = form.ProjectScheduleId;
+
+        return entity;
+    }
 
 }

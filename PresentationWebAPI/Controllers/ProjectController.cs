@@ -17,7 +17,7 @@ public class ProjectsController(IProjectService projectService) : ControllerBase
     public async Task<IActionResult> Create(ProjectRegistrationForm form)
     {
        
-        if (!ModelState.IsValid && form.CustomerId < 1)
+        if (!ModelState.IsValid || form.CustomerId < 1)
             return BadRequest();
 
         //returnerar bool nedan om den lyckas eller inte
@@ -35,14 +35,38 @@ public class ProjectsController(IProjectService projectService) : ControllerBase
         return Ok(projects);
     }
 
-    //Exempel update pch delete från lektion nedan:
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var project = await _projectService.GetSingleProjectAsync(id);
+        return project == null ? NotFound() : Ok(project);
+    }
 
-    //[HttpPut]
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, ProjectRegistrationForm form)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest();
+
+        var result = await _projectService.UpdateProjectAsync(id, form);
+        return result ? Ok() : NotFound();
+    }
+
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var result = await _projectService.DeleteProjectAsync(id);
+        return result ? Ok() : NotFound();
+    }
+
+
+    //[HttpPut("{id}")]
     //public async Task<IActionResult> Update(ProjectRegistrationForm form)
     //{
-    //    await _projectService.UpdateAsync(form)
+    //   var result = await _projectService.UpdateProjectAsync(projectId, form)
     //return result ? ok(result) : NotFound();
-    //        }
+    //}
 
     //[HttpDelete]
     //public async Task<IActionResult> Delete(int id)
