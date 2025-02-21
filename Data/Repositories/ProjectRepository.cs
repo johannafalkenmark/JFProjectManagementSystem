@@ -16,21 +16,38 @@ public class ProjectRepository(DataContext context) : BaseRepository<ProjectEnti
 
     public override async Task<IEnumerable<ProjectEntity>> GetAllAsync()
     {
-        var entities = await _context.Projects.Include(x => x.ProjectManager).ToListAsync();
+
+        //LÄgg in select om vi bara vill välja exakt vad vi ska ha ut - prestandaoptimering eager loading, behöver då skapa nytt objekt. Include är join satser. skickar med allt lazy loading.
+        //.Where innebär om jag vill hämta just tex rolename som är x
+        //.Select om vill välja bara specifika delar i objektet
+        
+        var entities = await _context.Projects
+            .Include(x => x.Customer)
+            .Include(x => x.ProjectManager)
+            .Include(x => x.ServiceType)
+            .Include(x => x.StatusType)
+            .Include(x => x.User)
+            .Include(x => x.ProjectSchedule)
+            .Include(x => x.ProjectNote)
+            .ToListAsync();
 
         return entities!;
 
     }
 
-    //Exempel hämta en sak med statustype:
-    public override async Task<ProjectEntity> GetAsync(Expression<Func<ProjectEntity, bool>> expression)
+    public override async Task<ProjectEntity?> GetAsync(Expression<Func<ProjectEntity, bool>> expression)
     {
         if (expression == null)
             return null!;
 
         return await _context.Projects
-            .Include(x => x.StatusType)
+           .Include(x => x.Customer)
             .Include(x => x.ProjectManager)
+            .Include(x => x.ServiceType)
+            .Include(x => x.StatusType)
+            .Include(x => x.User)
+            .Include(x => x.ProjectSchedule)
+            .Include(x => x.ProjectNote)
             .FirstOrDefaultAsync(expression) ?? null!; 
    
 

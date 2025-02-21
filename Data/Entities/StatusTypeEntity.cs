@@ -10,6 +10,10 @@ public class StatusTypeEntity
 
     public int Id { get; set; }
 
-    public string? TypeName { get; set; }
+    public string TypeName { get; set; } = null!;
+
+
+    ////om jag går via StatusType kan jag hämta alla projekt:
+    public ICollection<ProjectEntity> Projects = [];
 
 }

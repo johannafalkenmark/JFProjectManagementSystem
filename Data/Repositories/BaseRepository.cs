@@ -7,30 +7,30 @@ using System.Linq.Expressions;
 
 namespace Data.Repositories;
 
-public abstract class BaseRepository<TEntity>(DataContext context) : IBaseRepository<TEntity> where TEntity : class //säkerställer att det är en klass
+public abstract class BaseRepository<TEntity>(DataContext context) : IBaseRepository<TEntity> where TEntity : class 
 {
     private readonly DataContext _context = context;
     private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
 
     //CREATE
     //Virtual gör det möjligt att skriva över/göra eventuella justeringar som önskas i de olika repositories 
-    public virtual async Task<TEntity> CreateAsync(TEntity entity)
+    public virtual async Task<bool> CreateAsync(TEntity entity)
     {
         if (entity == null)
-            return null!;
+            return false!;
         try
         {
 
 
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
-            return entity;
+            return true;
 
         }
         catch (Exception ex)
         {
             Debug.WriteLine($"Error creating {nameof(TEntity)} :: {ex.Message}");
-            return null!;
+            return false!;
         }
     }
 
@@ -38,76 +38,81 @@ public abstract class BaseRepository<TEntity>(DataContext context) : IBaseReposi
     //READ
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
     {
-        return await _dbSet.ToListAsync();
-    }
+        try
+        {
+            var entities = await _dbSet.ToListAsync();
+            return entities;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error reading {nameof(TEntity)} :: {ex.Message}");
+            return null!;
+
+        }
+        }
 
 
 
-    public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> expression)
-    {//Skickar ned  entity får tillbaka ett bool värde ovan om hittad eller ej. Gjort denna mer flexibel.
+    public virtual async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> expression)
+    {//Skickar ned  entity får tillbaka ett bool värde ovan om hittad eller ej. 
 
         if (expression == null)
             return null!;
 
-        return await _dbSet.FirstOrDefaultAsync(expression) ?? null!;
+        var entity = await _dbSet.FirstOrDefaultAsync(expression);
+        return entity;
     }
 
 
 
     //UPDATE
-    public virtual async Task<TEntity> UpdateAsync(Expression<Func<TEntity, bool>> expression, TEntity updatedEntity)
+    public virtual async Task<bool> UpdateAsync(TEntity entity)
     {
 
-        if (updatedEntity == null)
-            return null!;
-        try
-        {
-            var existingEntity = await _dbSet.FirstOrDefaultAsync(expression) ?? null!;
-            if (existingEntity == null)
-                return null!;
-
-
-            _context.Entry(existingEntity).CurrentValues.SetValues(updatedEntity);
-            await _context.SaveChangesAsync();
-            return existingEntity;
-
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Error updating {nameof(TEntity)} :: {ex.Message}");
-            return null!;
-        }
-    }
-
-
-    //DELETE
-    public virtual async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> expression)
-    {
-
-        if (expression == null)
+        if (entity == null)
             return false!;
-
         try
         {
-            var existingEntity = await _dbSet.FirstOrDefaultAsync(expression) ?? null!;
-            if (existingEntity == null)
-                return false;
-
-            _dbSet.Remove(existingEntity);
+            _dbSet.Update(entity);
             await _context.SaveChangesAsync();
             return true;
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error deleting {nameof(TEntity)} :: {ex.Message}");
+           
+            Debug.WriteLine($"Error updating {nameof(TEntity)} :: {ex.Message}");
+
             return false;
         }
+    }
+
+
+    //DELETE
+    public virtual async Task<bool> DeleteAsync(TEntity entity)
+    {
+
+        if (entity == null)
+            return false!;
+
+        try
+        {
+            _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error deleting {nameof(TEntity)} :: {ex.Message}"); 
+            return false;
+        }
+        
 
     }
 
     //Kontrollerar om finns eller inte, bara hämta om den finns, kolla av det innan.nedan skickar då bool värde (any)
     public virtual async Task<bool> AlreadyExistsAsync(Expression<Func<TEntity, bool>> expression)
     {
-        return await _dbSet.AnyAsync(expression);
+       var result = await _dbSet.AnyAsync(expression);
+        return result;
     }
 }

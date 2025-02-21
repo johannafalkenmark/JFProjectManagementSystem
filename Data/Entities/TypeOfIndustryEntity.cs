@@ -11,6 +11,9 @@ public class TypeOfIndustryEntity
 
     public string? TypeName { get; set; }
 
+    public ICollection<CustomerEntity> Customers = [];
+
+
 
 
 }

@@ -8,7 +8,8 @@ public class CustomerTypeEntity
     [Key]
     public int Id { get; set; }
 
-    public string? TypeName { get; set; } 
+    public string TypeName { get; set; } = null!;
 
+    public ICollection<CustomerEntity> Customers = [];
 
 }
