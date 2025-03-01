@@ -26,7 +26,10 @@ public class CustomerRepository_Tests
         //Arrange
         var context = GetDataContext();
         context.Customers.AddRange(TestData.CustomerEntities);
-        //context.ServiceType.AddRange(TestData.ServiceTypeEntities);
+      context.CustomerType.AddRange(TestData.CustomerTypesEntities);
+      context.TypeOfIndustry.AddRange(TestData.TypeOfIndustryEntities);
+      context.CustomerAddress.AddRange(TestData.CustomerAddressEntities);
+      context.CustomerReference.AddRange(TestData.CustomerReferencesEntities);
         await context.SaveChangesAsync();
 
         ICustomerRepository repository = new CustomerRepository(context);
