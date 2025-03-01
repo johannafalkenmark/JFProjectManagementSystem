@@ -17,14 +17,15 @@ public static class TestData
 
     public static readonly CostEntity[] CostsEntities =
     [
-    new CostEntity {Id = 1, Cost = 100 }, 
-    new CostEntity {Id = 2, Cost = 1200 }
+    new CostEntity {Id = 1, Cost = 150, ServiceTypeId = 1 }, 
+    new CostEntity {Id = 2, Cost = 500, ServiceTypeId = 2 }
      ];
 
     public static readonly ServiceTypeEntity[] ServiceTypeEntities =
   [
-  new ServiceTypeEntity {Id = 1, TypeName = "Monthly" },
-    new ServiceTypeEntity {Id = 2, TypeName = "Hourly" }
+  new ServiceTypeEntity {Id = 1, TypeName = "Monthly", ServiceCategoryId = 2 },
+    new ServiceTypeEntity {Id = 2, TypeName = "Hourly", ServiceCategoryId = 1}
+
    ];
 
 
@@ -43,8 +44,8 @@ public static class TestData
     
     public static readonly CustomerEntity[] CustomerEntities =
   [
-  new CustomerEntity {Id = 1, CustomerName = "Company" },
-    new CustomerEntity {Id = 2, CustomerName = "Företag" }
+  new CustomerEntity {Id = 1, CustomerName = "Company", CustomerTypeId = 1, TypeOfIndustryId = 1, CustomerAddressId = 1, CustomerReferenceId = 1 },
+    new CustomerEntity {Id = 2, CustomerName = "Företag", CustomerTypeId = 2, TypeOfIndustryId = 2, CustomerAddressId = 2, CustomerReferenceId = 2  }
     
    ];
 
@@ -84,24 +85,24 @@ new ProjectNoteEntity {Id = 1, Notes = "Take note" },
 
 ];
 
-//    public static readonly ProjectScheduleEntity[] ProjectSchedulesEntities =
-//[
-//new ProjectScheduleEntity {Id = 1, StartDate = 01.01.2001, EndDate = "1924-01-05" },
-//    new ProjectScheduleEntity {Id = 2, StartDate = 01-01-01, EndDate = "1924-01-05" }
-//];
+    public static readonly ProjectScheduleEntity[] ProjectSchedulesEntities =
+[
+new ProjectScheduleEntity {Id = 1, StartDate = new DateOnly(2025, 1, 1), EndDate = new DateOnly(2025, 2, 2)},
+    new ProjectScheduleEntity {Id = 2, StartDate = new DateOnly(2025, 5, 5), EndDate = new DateOnly(2025, 6, 6) }
+];
 
 
     public static readonly StatusTypeEntity[] StatusTypeEntities =
 [
 new StatusTypeEntity {Id = 1, TypeName = "Ongoing" },
-new StatusTypeEntity {Id = 1, TypeName = "Finished" },
+new StatusTypeEntity {Id = 2, TypeName = "Finished" },
 
 ];
 
     public static readonly TypeOfIndustryEntity[] TypeOfIndustryEntities =
 [
 new TypeOfIndustryEntity {Id = 1, TypeName = "Forest" },
-new TypeOfIndustryEntity {Id = 1, TypeName = "Industry" },
+new TypeOfIndustryEntity {Id = 2, TypeName = "Industry" },
 
 ];
 
@@ -110,7 +111,7 @@ new TypeOfIndustryEntity {Id = 1, TypeName = "Industry" },
 
 
 
-    public static readonly ProjectEntity[] ProjectsEntities = //lägg till de andra delarna
+    public static readonly ProjectEntity[] ProjectsEntities = 
        [
        new ProjectEntity    { 
            Id = 1,
@@ -124,11 +125,16 @@ new TypeOfIndustryEntity {Id = 1, TypeName = "Industry" },
        ProjectNoteId = 1,
        },
 
-
-
-        //Upprepa
-        new ProjectEntity { ProjectName = "Projektnamn 2"},
-        new ProjectEntity { ProjectName = "Projektnamn 3"}
+        new ProjectEntity {  Id = 2,
+       ProjectName = "ProjektNamn 2",
+       CustomerId = 2,
+       ProjectManagerId = 2,
+       ProjectScheduleId = 2,
+       StatusTypeId = 2,
+       ServiceTypeId = 2,
+       UserId = 2,
+       ProjectNoteId = 2,},
+        
        ];
 
 

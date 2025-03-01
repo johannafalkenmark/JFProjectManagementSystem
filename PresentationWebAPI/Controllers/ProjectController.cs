@@ -61,19 +61,6 @@ public class ProjectsController(IProjectService projectService) : ControllerBase
     }
 
 
-    //[HttpPut("{id}")]
-    //public async Task<IActionResult> Update(ProjectRegistrationForm form)
-    //{
-    //   var result = await _projectService.UpdateProjectAsync(projectId, form)
-    //return result ? ok(result) : NotFound();
-    //}
-
-    //[HttpDelete]
-    //public async Task<IActionResult> Delete(int id)
-    //{
-    //    await _projectService.DeleteAsync(id);
-    //    return result ? ok(result) : NotFound();
-    //}
 
 
 }

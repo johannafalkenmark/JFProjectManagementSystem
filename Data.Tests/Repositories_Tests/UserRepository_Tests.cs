@@ -27,7 +27,6 @@ public class UserRepository_Tests
         //Arrange
         var context = GetDataContext();
         context.User.AddRange(TestData.UsersEntities);
-        //Lägg till fler saker här om det är beroemdem
         await context.SaveChangesAsync();
 
         IUserRepository repository = new UserRepository(context);
